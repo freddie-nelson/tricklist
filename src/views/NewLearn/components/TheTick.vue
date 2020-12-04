@@ -64,6 +64,7 @@ export default {
   },
   mounted() {
     this.fillParticles(true);
+    setTimeout(this.fillParticles, 60);
   }
 };
 </script>
@@ -76,7 +77,6 @@ export default {
    :index="i" 
    :svg="particleSvg" 
    :particle="p" 
-   @spawn-particles="fillParticles" 
    @transitionend="i === 119 ? particles = [] : null"
   />
 
