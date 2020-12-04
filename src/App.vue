@@ -13,8 +13,8 @@
     <div class="tricks">
       <Trick 
         v-for="(trick, i) in $store.state.tricks" 
-        :key="i" 
-        :trick="trick.text" 
+        :key="trick.id" 
+        :trick="{ ...trick, i }" 
       />
 
       <Trick 
@@ -78,6 +78,11 @@ main {
   padding: calc(max(.8vw, 10px)) calc(max(1.2vw, 15px));
   border-radius: 10px;
   box-shadow: 5px 5px 30px 0px rgba(0, 0, 0, 0.2);
+
+  @media screen and (max-width: 750px) {
+    border-radius: 0px;
+    max-height: unset;
+  }
 
   .title {
     font-weight: 800;

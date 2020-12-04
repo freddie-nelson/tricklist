@@ -7,8 +7,12 @@ export default {
       default: false
     },
     trick: {
-      type: String,
-      default: ""
+      type: Object,
+      default() {
+        return {
+          text: ""
+        }
+      }
     }
   },
   data() {
@@ -52,7 +56,7 @@ export default {
     @keyup.enter="addTrick"
   >
   <span class="underline"></span>
-  <h3>{{ trick }}</h3>
+  <h3 :class="{ complete }">{{ trick.text }}</h3>
 </div>
 </template>
 
@@ -113,6 +117,10 @@ export default {
     font-size: 1.4rem;
     font-weight: 800;
     opacity: .7;
+
+    &.complete {
+      text-decoration: line-through;
+    }
   }
 
   .checkbox {
