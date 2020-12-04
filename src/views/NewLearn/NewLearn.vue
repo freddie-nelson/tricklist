@@ -3,7 +3,7 @@
   <Tick />
   <h1 class="title nice">Nice job! 🎉</h1>
   <h2 class="title learnt">You just learnt</h2>
-  <h2 class="title trick">Bri Flip!</h2>
+  <h2 class="title trick">{{ $store.state.newLearn.trick }}!</h2>
 </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     const delay = 3000;
 
     setTimeout(() => this.leave = true, delay)
-    setTimeout(() => this.$store.commit("SET_SHOW_NEW_LEARN", false), delay + 500)
+    setTimeout(() => this.$store.commit("SET_NEW_LEARN", { show: false }), delay + 500)
   }
 }
 </script>
@@ -42,6 +42,10 @@ export default {
   align-items: center;
   background-color: white;
   transition: transform .5s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
 
   h1 {
     position: absolute;
