@@ -33,7 +33,7 @@ export default {
     },
     generateParticles(empty, delay) {
       const particles = [];
-      const PARTICLE_COUNT = 50;
+      const PARTICLE_COUNT = 40;
 
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         if (empty) {
@@ -64,15 +64,21 @@ export default {
   },
   mounted() {
     this.fillParticles(true);
-    setTimeout(this.fillParticles, 100);
-    setTimeout(() => this.particles = [], 2000);
   }
 };
 </script>
 
 <template>
 <div class="tick-container" @click="regenerate">
-  <Particle v-for="(p, i) in particles" :key="i" :svg="particleSvg" :particle="p" />
+  <Particle
+   v-for="(p, i) in particles" 
+   :key="i" 
+   :index="i" 
+   :svg="particleSvg" 
+   :particle="p" 
+   @spawn-particles="fillParticles" 
+   @transitionend="i === 119 ? particles = [] : null"
+  />
 
   <div class="tick">
     <img src="@/assets/tick.svg" alt="">
@@ -90,7 +96,7 @@ export default {
   justify-content: center;
   overflow: hidden;
   transform: translate(calc(50vw + 400px)) rotate(180deg);
-  animation: slide-in .6s ease forwards, pulse 8s ease infinite;
+  animation: slide-in .6s ease forwards, pulse 2.5s ease infinite .5s;
   text-align: center;
 
   @keyframes slide-in {
@@ -100,19 +106,21 @@ export default {
   }
 
   @keyframes pulse {
-    50% {
+    20% {
       transform: scale(1.2)
     }
 
     to {
-      transform: scale(1)
+      transform: scale(1.1)
     }
   }
 
   .tick {
     z-index: 2;
-    width: 184px;
-    height: 184px;
+    width: 40vw;
+    height: 40vw;
+    max-width: 200px;
+    max-height: 200px;
     background-color: #86E166;
     border-radius: 20px;
     display: flex;
@@ -120,6 +128,11 @@ export default {
     justify-content: center;
     box-shadow: 0px 0px 60px 2px #86ff5b,
                 0px 0px 0px 10px #94ff7033;
+
+    img {
+      width: 50%;
+      height: 50%;
+    }
   }
 }
 </style>

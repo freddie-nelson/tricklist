@@ -13,6 +13,12 @@ export default {
           scale: null
         }
       }
+    },
+    index: Number
+  },
+  mounted() {
+    if (this.index === 119) {
+      this.$emit("spawn-particles");
     }
   }
 };
