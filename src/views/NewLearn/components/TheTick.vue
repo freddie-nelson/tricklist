@@ -4,6 +4,10 @@ import Particle from "./ATickParticle.vue";
 // particles
 import p1 from "@/assets/particle01.svg";
 
+// tick sound
+import tickAudioLoc from "@/assets/newlearn.mp3";
+const tickAudio = new Audio(tickAudioLoc);
+
 export default {
   name: "Tick",
   components: {
@@ -60,17 +64,22 @@ export default {
         ...this.generateParticles(empty, .54),  
         ...this.generateParticles(empty, .58),  
       ];
+    },
+    playAudio() {
+      tickAudio.play();
     }
   },
   mounted() {
     this.fillParticles(true);
-    setTimeout(this.fillParticles, 60);
+    setTimeout(() => {
+      this.fillParticles();
+    }, 60);
   }
 };
 </script>
 
 <template>
-<div class="tick-container" @click="regenerate">
+<div class="tick-container" @animationend="playAudio">
   <Particle
    v-for="(p, i) in particles" 
    :key="i" 
