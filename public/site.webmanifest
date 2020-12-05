@@ -15,6 +15,6 @@
     ],
     "theme_color": "#373737",
     "background_color": "#373737",
-    "start_url": "tricklist.co",
+    "start_url": "/",
     "display": "standalone"
 }
