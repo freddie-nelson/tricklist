@@ -1,13 +1,13 @@
 <template>
-  <NewLearn v-if="$store.state.newLearn.show" />
-
   <main>
+    <NewLearn v-if="$store.state.newLearn.show" />
+
     <h1 class="title">My Tricklist</h1>
     <div class="seperator"></div>
-    <h2>Working On</h2>
+    <h2>Learning</h2>
     <button 
       class="add-trick" 
-      @click="add = true"
+      @click="addTrick"
     >Add Trick</button>
 
     <div class="tricks">
@@ -18,11 +18,21 @@
       />
 
       <Trick 
-        v-if="add" 
+        v-if="add || $store.state.tricks.length === 0" 
         :add="true" 
         @hide="add = false"
       />
     </div>
+
+    <h2>Tracking</h2>
+    <v-calendar
+      style="margin-top: 15px;"
+      color="accent"
+      is-expanded
+      is-dark
+      :attributes="attributes"
+      :max-date="new Date()"
+    />
   </main>
 </template>
 
@@ -40,12 +50,58 @@ export default {
     return {
       add: false
     }
+  },
+  computed: {
+    attributes() {
+      const tricks = this.$store.state.learnt;
+
+      const dates = tricks.map(trick => {
+        return {
+          highlight: true,
+          dates: new Date(trick.dateCompleted)
+        }
+      })
+
+      return dates
+    }
+  },
+  methods: {
+    addTrick() {
+      this.add = true;
+
+      if (this.$store.state.tricks.length === 0) {
+        document.getElementById("add-trick-input").focus();
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&display=swap');
+
+// colors
+:root {
+  --text: #FFF;
+  --bg: #1A202C;
+  --accent: #8e2de2;
+  --accent-2: #4a00e0;
+  --tick-bg: #86E166;
+  --tick-shadow-harsh: #86ff5b;
+  --tick-shadow-soft: #94ff7033;
+}
+
+.vc-container {
+  --accent-100: var(--accent) !important;
+  --accent-200: var(--accent) !important;
+  --accent-300: var(--accent) !important;
+  --accent-400: var(--accent) !important;
+  --accent-500: var(--accent-2) !important;
+  --accent-600: var(--accent) !important;
+  --accent-700: var(--accent) !important;
+  --accent-800: var(--accent) !important;
+  --accent-900: var(--accent) !important;
+}
 
 * {
   padding: 0;
@@ -58,12 +114,13 @@ body {
   height: 100vh;
   font-family: "Source Sans Pro", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
+  color: var(--text);
 }
 
 #app {
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, #12c2e9, #c471ed, #f64f59);
+  background: linear-gradient(to right, var(--accent), var(--accent-2));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,10 +131,12 @@ main {
   max-height: 850px;
   height: 100%;
   width: 100%;
-  background-color: white;
+  background-color: var(--bg);
   padding: calc(max(.8vw, 10px)) calc(max(1.2vw, 15px));
   border-radius: 10px;
   box-shadow: 5px 5px 30px 0px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
 
   @media screen and (max-width: 750px) {
     border-radius: 0px;
@@ -90,7 +149,7 @@ main {
   }
 
   .seperator {
-    background-color: black;
+    background-color: var(--text);
     opacity: .2;
     width: 100%;
     height: 2px;
@@ -109,13 +168,13 @@ main {
   }
 
   .add-trick {
-    background: #12c2e9;
+    background: var(--accent);
     border: none;
     padding: 10px 15px;
     border-radius: 6px;
     font-size: .91rem;
     font-weight: bold;
-    color: white;
+    color: var(--bg);
     float: right;
     position: relative;
     z-index: 1;
@@ -125,7 +184,7 @@ main {
       content: "";
       z-index: -1;
       position: absolute;
-      background: #12c2e9;
+      background: var(--accent);
       opacity: .5;
       border-radius: 8px;
       width: 100%;

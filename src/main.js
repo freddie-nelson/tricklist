@@ -3,4 +3,10 @@ import App from './App.vue'
 import store from './store'
 import './registerServiceWorker'
 
-createApp(App).use(store).mount('#app')
+const app = createApp(App);
+app.use(store);
+
+import VCalendar from "v-calendar";
+app.use(VCalendar);
+
+app.mount('#app');

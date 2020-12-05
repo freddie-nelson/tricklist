@@ -39,21 +39,23 @@ export default {
     }
   },
   mounted() {
-    this.$refs.input.focus();
+    this.add && this.$store.state.tricks.length !== 0 ? this.$refs.input.focus() : null;
   }
 }
 </script>
 
 <template>
 <div class="trick" :class="{ add }">
-  <button class="checkbox" :class="{ complete }" @click="markComplete"></button>
+  <button :disabled="add" class="checkbox" :class="{ complete }" @click="markComplete"></button>
   <input 
+    v-if="add"
     v-model.trim="text"
     ref="input" 
     type="text" 
     placeholder="Type a trick..." 
     @blur="hide"
     @keyup.enter="addTrick"
+    id="add-trick-input"
   >
   <span class="underline"></span>
   <h3 :class="{ complete }">{{ trick.text }}</h3>
@@ -65,6 +67,7 @@ export default {
   display: flex;
   align-items: center;
   margin: 8px 0;
+  color: var(--text);
 
   input {
     padding: 0;
@@ -76,25 +79,20 @@ export default {
     display: none;
     outline: none;
     position: relative;
+    color: var(--text);
+    opacity: .5;
+    background-color: transparent;
+
+    &::placeholder {
+      color: var(--text) !important;
+      opacity: .5;
+    }
 
     &:focus {
-      border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+      border-bottom: 2px solid var(--text);
       padding-bottom: 3px;
       margin-bottom: -5px;
     }
-  }
-
-  .confirm {
-    padding: 4px 15px;
-    margin-left: 8px;
-    font-weight: 800;
-    background-color: #12C2E9;
-    border-radius: 5px;
-    color: white;
-    font-size: 1rem;
-    display: none;
-    outline: none;
-    transform: scale(.9);
   }
 
   &.add {
@@ -126,7 +124,7 @@ export default {
   .checkbox {
     width: 26px;
     height: 26px;
-    border: 2px solid black;
+    border: 2px solid var(--text);
     border-radius: 5px;
     margin-right: 8px;
     transition: background .3s ease;
@@ -134,7 +132,7 @@ export default {
 
     &.complete {
       border: none;
-      background-color: #86E166;
+      background-color: var(--tick-bg);
       background-image: url("../assets/tick.svg");
       background-repeat: no-repeat;
       background-position: center center;

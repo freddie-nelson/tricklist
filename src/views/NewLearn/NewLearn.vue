@@ -40,7 +40,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: var(--bg);
   transition: transform .5s ease;
   position: absolute;
   top: 0;

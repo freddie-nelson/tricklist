@@ -35,7 +35,7 @@ export default createStore({
         
         delete trick.i;
         trick.completed = true;
-        trick.dateCompleted = new Date().getTime();
+        trick.dateCompleted = new Date();
 
         state.learnt.push(trick);
         addLearntToLocalStorage(state.learnt);
@@ -45,7 +45,7 @@ export default createStore({
       state.tricks.push({
         id: Math.random().toString().split(".")[1],
         text: trick,
-        dateAdded: new Date().getTime(),
+        dateAdded: new Date(),
         completed: false,
         dateCompleted: null,
       });

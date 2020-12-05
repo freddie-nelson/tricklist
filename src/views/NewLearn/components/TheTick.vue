@@ -1,9 +1,6 @@
 <script>
 import Particle from "./ATickParticle.vue";
 
-// particles
-import p1 from "@/assets/particle01.svg";
-
 // tick sound
 import tickAudioLoc from "@/assets/newlearn.mp3";
 const tickAudio = new Audio(tickAudioLoc);
@@ -15,7 +12,6 @@ export default {
   },
   data() {
     return {
-      particleSvg: p1,
       particles: []
     }
   },
@@ -84,7 +80,6 @@ export default {
    v-for="(p, i) in particles" 
    :key="i" 
    :index="i" 
-   :svg="particleSvg" 
    :particle="p" 
    @transitionend="i === 119 ? particles = [] : null"
   />
@@ -130,13 +125,13 @@ export default {
     height: 40vw;
     max-width: 200px;
     max-height: 200px;
-    background-color: #86E166;
+    background-color: var(--tick-bg);
     border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0px 0px 60px 2px #86ff5b,
-                0px 0px 0px 10px #94ff7033;
+    box-shadow: 0px 0px 60px 2px var(--tick-shadow-harsh),
+                0px 0px 0px 10px var(--tick-shadow-soft);
 
     img {
       width: 50%;
