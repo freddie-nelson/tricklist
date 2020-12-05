@@ -136,11 +136,19 @@ main {
   border-radius: 10px;
   box-shadow: 5px 5px 30px 0px rgba(0, 0, 0, 0.2);
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    display: none
+  }
 
   @media screen and (max-width: 750px) {
     border-radius: 0px;
     max-height: unset;
+
+    .newlearn {
+      border-radius: 0px;
+    }
   }
 
   .title {
@@ -174,7 +182,7 @@ main {
     border-radius: 6px;
     font-size: .91rem;
     font-weight: bold;
-    color: var(--bg);
+    color: var(--text);
     float: right;
     position: relative;
     z-index: 1;

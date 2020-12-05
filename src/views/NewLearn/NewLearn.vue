@@ -46,6 +46,7 @@ export default {
   top: 0;
   left: 0;
   z-index: 10;
+  border-radius: 10px;
 
   h1 {
     position: absolute;
