@@ -82,10 +82,6 @@ export default {
       })
 
       return dates
-    },
-    newLearnDate() {
-      if (!this.currentDate) return null;
-      return this.currentDate.toLocaleDateString();
     }
   },
   methods: {
@@ -168,6 +164,7 @@ main {
   box-shadow: 5px 5px 30px 0px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow-x: hidden;
+  padding-bottom: 80px;
 
   &::-webkit-scrollbar {
     display: none
@@ -280,6 +277,8 @@ main {
         &.trick {
           text-overflow: ellipsis;
           white-space: nowrap;
+          overflow: hidden;
+          max-width: 29vw;
         }
 
         &:nth-of-type(2) {

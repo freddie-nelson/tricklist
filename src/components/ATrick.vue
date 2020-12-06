@@ -57,6 +57,7 @@ export default {
     @keyup.enter="addTrick"
     id="add-trick-input"
   >
+  <button class="confirm" @click="addTrick">Add</button>
   <span class="underline"></span>
   <h3 :class="{ complete }">{{ trick.text }}</h3>
 </div>
@@ -95,6 +96,15 @@ export default {
     }
   }
 
+  .confirm {
+    padding: 5px 8px;
+    outline: none;
+    color: var(--accent);
+    font-weight: bold;
+    filter: brightness(1.8);
+    display: none;
+  }
+
   &.add {
     opacity: .5;
 
@@ -115,6 +125,10 @@ export default {
     font-size: 1.4rem;
     font-weight: 800;
     opacity: .7;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 88%;
 
     &.complete {
       text-decoration: line-through;
