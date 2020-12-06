@@ -56,6 +56,7 @@ export default {
     @blur="hide"
     @keyup.enter="addTrick"
     id="add-trick-input"
+    autocomplete="false"
   >
   <button class="confirm" @click="addTrick">Add</button>
   <span class="underline"></span>
