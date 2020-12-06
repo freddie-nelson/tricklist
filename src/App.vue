@@ -24,7 +24,7 @@
       />
     </div>
 
-    <h2>Tracking</h2>
+    <h2>Track Your Progress</h2>
     <v-calendar
       style="margin-top: 15px;"
       color="accent"
@@ -32,7 +32,23 @@
       is-dark
       :attributes="attributes"
       :max-date="new Date()"
+      @dayclick="dayClicked"
     />
+    
+    <div class="learns">
+      <h2>You got {{ learns.length }} new learns on {{ currentDate ? currentDate.toLocaleDateString() : null }}</h2>
+      <div class="learn header">
+        <p>Trick Name</p>
+        <p>Date Added</p>
+        <p>Date Learnt</p>
+      </div>
+      <div class="seperator"></div>
+      <div class="learn" v-for="(learn, i) in learns" :key="i">
+        <p class="trick">{{ learn.text }}</p>
+        <p>{{ new Date(learn.dateAdded).toLocaleDateString() }}</p>
+        <p>{{ new Date(learn.dateCompleted).toLocaleDateString() }}</p>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -48,7 +64,9 @@ export default {
   },
   data() {
     return {
-      add: false
+      add: false,
+      learns: [],
+      currentDate: null
     }
   },
   computed: {
@@ -58,11 +76,16 @@ export default {
       const dates = tricks.map(trick => {
         return {
           highlight: true,
+          key: trick.id,
           dates: new Date(trick.dateCompleted)
         }
       })
 
       return dates
+    },
+    newLearnDate() {
+      if (!this.currentDate) return null;
+      return this.currentDate.toLocaleDateString();
     }
   },
   methods: {
@@ -72,6 +95,14 @@ export default {
       if (this.$store.state.tricks.length === 0) {
         document.getElementById("add-trick-input").focus();
       }
+    },
+    dayClicked ({ attributes, date }) {
+      // find corresponding trick for each atrr on this day
+      this.learns = attributes.map(attr => {
+        return this.$store.state.learnt.find(ele => ele.id === attr.key);
+      })
+
+      this.currentDate = date;
     }
   }
 }
@@ -172,7 +203,7 @@ main {
   }
 
   .tricks {
-    margin: 12px 16px 16px 16px;
+    margin: 12px 16px 24px 16px;
   }
 
   .add-trick {
@@ -207,6 +238,57 @@ main {
 
       &::before {
         transform: scale(1.12, 1.3);
+      }
+    }
+  }
+
+  .learns {
+    margin-top: 10px;
+
+    h2 {
+      font-size: 1.5rem;
+      opacity: 1;
+    }
+
+    .learn {
+      width: 100%;
+      height: 40px;
+      display: grid;
+      align-items: center;
+      margin: 12px 0;
+      padding: 0 10px;
+      grid-template-columns: 1fr 1fr 1fr;
+
+      &.header {
+        margin: 0px;
+        margin-top: 15px;
+        height: 20px;
+        
+        p {
+          opacity: 1;
+        }
+      }
+
+      &:nth-of-type(3) {
+        margin-top: 0px;
+      }
+
+      p {
+        font-size: 1.05rem;
+        opacity: .6;
+
+        &.trick {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        &:nth-of-type(2) {
+          margin: 0 auto;
+        }
+
+        &:nth-of-type(3) {
+          margin-left: auto;
+        }
       }
     }
   }
