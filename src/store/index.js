@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
 
 function addTricksToLocalStorage(tricks) {
   localStorage.setItem("tricks", JSON.stringify(tricks));
@@ -28,11 +28,11 @@ export default createStore({
       } else {
         state.newLearn.show = true;
         state.newLearn.trick = obj.trick.text;
-        
+
         const { trick } = obj;
         state.tricks.splice(trick.i, 1);
         addTricksToLocalStorage(state.tricks);
-        
+
         delete trick.i;
         trick.completed = true;
         trick.dateCompleted = new Date();
@@ -50,6 +50,10 @@ export default createStore({
         dateCompleted: null,
       });
 
+      addTricksToLocalStorage(state.tricks);
+    },
+    REMOVE_TRICK(state, index) {
+      state.tricks.splice(index, 1);
       addTricksToLocalStorage(state.tricks);
     },
   },

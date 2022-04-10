@@ -5,28 +5,26 @@
     <h1 class="title">My Tricklist</h1>
     <div class="seperator"></div>
     <h2>Learning</h2>
-    <button 
-      class="add-trick" 
-      @click="addTrick"
-    >Add Trick</button>
+    <button class="add-trick" @click="addTrick">Add Trick</button>
 
     <div class="tricks">
-      <Trick 
-        v-for="(trick, i) in $store.state.tricks" 
-        :key="trick.id" 
-        :trick="{ ...trick, i }" 
+      <Trick
+        v-for="(trick, i) in $store.state.tricks"
+        :key="trick.id"
+        :trick="{ ...trick, i }"
+        @remove="$store.commit('REMOVE_TRICK', i)"
       />
 
-      <Trick 
-        v-if="add || $store.state.tricks.length === 0" 
-        :add="true" 
+      <Trick
+        v-if="add || $store.state.tricks.length === 0"
+        :add="true"
         @hide="add = false"
       />
     </div>
 
     <h2>Track Your Progress</h2>
     <v-calendar
-      style="margin-top: 15px;"
+      style="margin-top: 15px"
       color="accent"
       is-expanded
       is-dark
@@ -34,9 +32,12 @@
       :max-date="new Date()"
       @dayclick="dayClicked"
     />
-    
+
     <div class="learns">
-      <h2>You got {{ learns.length }} new learns on {{ currentDate ? currentDate.toLocaleDateString() : null }}</h2>
+      <h2>
+        You got {{ learns.length }} new learns on
+        {{ currentDate ? currentDate.toLocaleDateString() : null }}
+      </h2>
       <div class="learn header">
         <p>Trick Name</p>
         <p>Date Added</p>
@@ -57,32 +58,32 @@ import NewLearn from "./views/NewLearn/NewLearn.vue";
 import Trick from "./components/ATrick.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     NewLearn,
-    Trick
+    Trick,
   },
   data() {
     return {
       add: false,
       learns: [],
-      currentDate: null
-    }
+      currentDate: null,
+    };
   },
   computed: {
     attributes() {
       const tricks = this.$store.state.learnt;
 
-      const dates = tricks.map(trick => {
+      const dates = tricks.map((trick) => {
         return {
           highlight: true,
           key: trick.id,
-          dates: new Date(trick.dateCompleted)
-        }
-      })
+          dates: new Date(trick.dateCompleted),
+        };
+      });
 
-      return dates
-    }
+      return dates;
+    },
   },
   methods: {
     addTrick() {
@@ -92,28 +93,28 @@ export default {
         document.getElementById("add-trick-input").focus();
       }
     },
-    dayClicked ({ attributes, date }) {
+    dayClicked({ attributes, date }) {
       // find corresponding trick for each atrr on this day
-      this.learns = attributes.map(attr => {
-        return this.$store.state.learnt.find(ele => ele.id === attr.key);
-      })
+      this.learns = attributes.map((attr) => {
+        return this.$store.state.learnt.find((ele) => ele.id === attr.key);
+      });
 
       this.currentDate = date;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&display=swap");
 
-// colors
+/* colors */
 :root {
-  --text: #FFF;
-  --bg: #1A202C;
+  --text: #fff;
+  --bg: #1a202c;
   --accent: #8e2de2;
   --accent-2: #4a00e0;
-  --tick-bg: #86E166;
+  --tick-bg: #86e166;
   --tick-shadow-harsh: #86ff5b;
   --tick-shadow-soft: #94ff7033;
 }
@@ -139,7 +140,8 @@ export default {
 body {
   width: 100vw;
   height: 100vh;
-  font-family: "Source Sans Pro", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Source Sans Pro", "Segoe UI", Tahoma, Geneva, Verdana,
+    sans-serif;
   overflow: hidden;
   color: var(--text);
 }
@@ -159,7 +161,7 @@ main {
   height: 100%;
   width: 100%;
   background-color: var(--bg);
-  padding: calc(max(.8vw, 10px)) calc(max(1.2vw, 15px));
+  padding: calc(max(0.8vw, 10px)) calc(max(1.2vw, 15px));
   border-radius: 10px;
   box-shadow: 5px 5px 30px 0px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -167,7 +169,7 @@ main {
   padding-bottom: 80px;
 
   &::-webkit-scrollbar {
-    display: none
+    display: none;
   }
 
   @media screen and (max-width: 750px) {
@@ -186,7 +188,7 @@ main {
 
   .seperator {
     background-color: var(--text);
-    opacity: .2;
+    opacity: 0.2;
     width: 100%;
     height: 2px;
     margin: 10px 0;
@@ -208,26 +210,26 @@ main {
     border: none;
     padding: 10px 15px;
     border-radius: 6px;
-    font-size: .91rem;
+    font-size: 0.91rem;
     font-weight: bold;
     color: var(--text);
     float: right;
     position: relative;
     z-index: 1;
-    transform: scale(.9);
+    transform: scale(0.9);
 
     &::before {
       content: "";
       z-index: -1;
       position: absolute;
       background: var(--accent);
-      opacity: .5;
+      opacity: 0.5;
       border-radius: 8px;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
-      transition: transform .15s ease;
+      transition: transform 0.15s ease;
     }
 
     &:focus {
@@ -260,7 +262,7 @@ main {
         margin: 0px;
         margin-top: 15px;
         height: 20px;
-        
+
         p {
           opacity: 1;
         }
@@ -272,7 +274,7 @@ main {
 
       p {
         font-size: 1.05rem;
-        opacity: .6;
+        opacity: 0.6;
 
         &.trick {
           text-overflow: ellipsis;

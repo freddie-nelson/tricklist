@@ -4,22 +4,23 @@ export default {
   props: {
     add: {
       type: Boolean,
-      default: false
+      default: false,
     },
     trick: {
       type: Object,
       default() {
         return {
-          text: ""
-        }
-      }
-    }
+          text: "",
+        };
+      },
+    },
   },
+  emits: ["hide", "remove"],
   data() {
     return {
       text: "",
-      complete: false
-    }
+      complete: false,
+    };
   },
   methods: {
     hide() {
@@ -31,37 +32,53 @@ export default {
 
       this.$store.commit("ADD_TRICK", this.text);
     },
+    removeTrick() {
+      this.$emit("remove");
+    },
     markComplete() {
       if (this.complete) return;
 
       this.complete = true;
       this.$store.commit("SET_NEW_LEARN", { show: true, trick: this.trick });
-    }
+    },
   },
   mounted() {
-    this.add && this.$store.state.tricks.length !== 0 ? this.$refs.input.focus() : null;
-  }
-}
+    this.add && this.$store.state.tricks.length !== 0
+      ? this.$refs.input.focus()
+      : null;
+  },
+};
 </script>
 
 <template>
-<div class="trick" :class="{ add }">
-  <button :disabled="add" class="checkbox" :class="{ complete }" @click="markComplete"></button>
-  <input 
-    v-if="add"
-    v-model.trim="text"
-    ref="input" 
-    type="text" 
-    placeholder="Type a trick..." 
-    @blur="hide"
-    @keyup.enter="addTrick"
-    id="add-trick-input"
-    autocomplete="false"
-  >
-  <button class="confirm" @click="addTrick">Add</button>
-  <span class="underline"></span>
-  <h3 :class="{ complete }">{{ trick.text }}</h3>
-</div>
+  <div class="trick" :class="{ add }">
+    <button
+      :disabled="add"
+      class="checkbox"
+      :class="{ complete }"
+      @click="markComplete"
+    ></button>
+    <input
+      v-if="add"
+      v-model.trim="text"
+      ref="input"
+      type="text"
+      placeholder="Type a trick..."
+      @blur="!text ? hide() : null"
+      @keyup.enter="addTrick"
+      id="add-trick-input"
+      autocomplete="false"
+    />
+    <button class="confirm" @click="addTrick">Add</button>
+    <span class="underline"></span>
+
+    <h3 :class="{ complete }">{{ trick.text }}</h3>
+
+    <button class="remove" @click="removeTrick">
+      <div></div>
+      <div></div>
+    </button>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -82,12 +99,12 @@ export default {
     outline: none;
     position: relative;
     color: var(--text);
-    opacity: .5;
+    opacity: 0.5;
     background-color: transparent;
 
     &::placeholder {
       color: var(--text) !important;
-      opacity: .5;
+      opacity: 0.5;
     }
 
     &:focus {
@@ -106,8 +123,41 @@ export default {
     display: none;
   }
 
+  .remove {
+    width: 1.5rem;
+    height: 1.5rem;
+    outline: none;
+    position: relative;
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover div {
+      background-color: var(--accent);
+    }
+
+    div {
+      width: 75%;
+      height: 0.2rem;
+      background-color: var(--text);
+      border-radius: 0.2rem;
+      transform-origin: center;
+      position: absolute;
+      transition: background-color 0.3s ease;
+
+      &:nth-of-type(1) {
+        transform: rotate(45deg);
+      }
+
+      &:nth-of-type(2) {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
   &.add {
-    opacity: .5;
+    opacity: 0.5;
 
     input {
       display: block;
@@ -115,6 +165,10 @@ export default {
 
     .confirm {
       display: block;
+    }
+
+    .remove {
+      display: none;
     }
 
     h3 {
@@ -125,7 +179,7 @@ export default {
   h3 {
     font-size: 1.4rem;
     font-weight: 800;
-    opacity: .7;
+    opacity: 0.7;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -142,7 +196,7 @@ export default {
     border: 2px solid var(--text);
     border-radius: 5px;
     margin-right: 8px;
-    transition: background .3s ease;
+    transition: background 0.3s ease;
     outline: none;
 
     &.complete {
